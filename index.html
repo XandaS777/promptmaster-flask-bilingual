@@ -1,0 +1,41 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>PromptMaster 360 – Bilingual</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <h1>🧠 PromptMaster 360 – Criador de Prompts</h1>
+  <form id="promptForm">
+    <label>Ferramenta / Tool:</label>
+    <select name="tool">
+      <option value="generate">Gerar Prompt</option>
+      <option value="refine">Refinar Prompt</option>
+      <option value="translate">Traduzir Prompt</option>
+      <option value="convert">Converter em Post</option>
+    </select>
+    <input type="text" name="area" placeholder="Área / Area of Focus" required>
+    <input type="text" name="tone" placeholder="Tom / Tone (e.g., Inspirador)" required>
+    <input type="text" name="objective" placeholder="Objetivo / Objective" required>
+    <button type="submit">✨ Gerar / Generate</button>
+  </form>
+  <div id="result" style="margin-top:20px;"></div>
+
+  <script>
+    document.getElementById("promptForm").addEventListener("submit", async function(e) {
+      e.preventDefault();
+      const form = new FormData(e.target);
+      const data = Object.fromEntries(form.entries());
+
+      const res = await fetch("/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+      const result = await res.json();
+      document.getElementById("result").innerText = result.response;
+    });
+  </script>
+</body>
+</html>
